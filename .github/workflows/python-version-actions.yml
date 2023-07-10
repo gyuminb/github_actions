@@ -25,9 +25,10 @@ jobs:
           name: python-version-check-result
           path: result/python-version-${{ matrix.python-version }}.txt # or path/to/artifact
       - name: Store the result
-        run:    git config --local user.email "guminb@ajou.ac.kr"
-        run:    git config --local user.name "Gyumin Baek"
-        run:    git add -A
-        run:    git commit -m "store python-version-${{ matrix.python-version }}.txt"
-        run:    git push 
+        run: |  
+          git config --local user.email "guminb@ajou.ac.kr"
+          git config --local user.name "Gyumin Baek"
+          git add -A
+          git commit -m "store python-version-${{ matrix.python-version }}.txt"
+          git push 
 
