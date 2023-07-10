@@ -3,12 +3,12 @@ name: Python-Version-Check
 on: workflow_dispatch
 
 jobs:
-  build:
+  build-3.8:
 
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.8"]
 
     steps:
       - uses: actions/checkout@v3
@@ -23,14 +23,69 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: python-version-check-result
-          path: result/python-version-${{ matrix.python-version }}.txt # or path/to/artifact
+          path: result/python-version-${{ matrix.python-version }}.txt 
       - name: Store the result
         run: |  
           git config --local user.email "guminb@ajou.ac.kr"
           git config --local user.name "Gyumin Baek"
           git add -A
           git commit -m "store python-version-${{ matrix.python-version }}.txt"
-          git push origin HEAD:${{ github.ref }}
-        env: 
-          GITHUB_TOKEN: ${{  secrets.GITHUB_TOKEN  }} 
-          GITHUB_REPOSITORY: ${{ github.repository }}
+          git push origin HEAD:${{ github.ref }} 
+
+  build-3.9:
+    needs: build-3.8
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: mkdir -p result
+
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)" > result/python-version-${{ matrix.python-version }}.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: python-version-check-result
+          path: result/python-version-${{ matrix.python-version }}.txt 
+      - name: Store the result
+        run: |  
+          git config --local user.email "guminb@ajou.ac.kr"
+          git config --local user.name "Gyumin Baek"
+          git add -A
+          git commit -m "store python-version-${{ matrix.python-version }}.txt"
+          git push origin HEAD:${{ github.ref }} 
+
+  build-3.10:
+      needs: build-3.9
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          python-version: ["3.10"]
+
+      steps:
+        - uses: actions/checkout@v3
+        - name: Set up Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v4
+          with:
+            python-version: ${{ matrix.python-version }}
+        - run: mkdir -p result
+
+        - name: Display Python version
+          run: python -c "import sys; print(sys.version)" > result/python-version-${{ matrix.python-version }}.txt
+        - uses: actions/upload-artifact@v3
+          with:
+            name: python-version-check-result
+            path: result/python-version-${{ matrix.python-version }}.txt 
+        - name: Store the result
+          run: |  
+            git config --local user.email "guminb@ajou.ac.kr"
+            git config --local user.name "Gyumin Baek"
+            git add -A
+            git commit -m "store python-version-${{ matrix.python-version }}.txt"
+            git push origin HEAD:${{ github.ref }} 
