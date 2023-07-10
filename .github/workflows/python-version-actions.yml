@@ -33,7 +33,7 @@ jobs:
           git push origin HEAD:${{ github.ref }} 
 
   build-39:
-    needs: build-3.8
+    needs: build-38
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -62,7 +62,7 @@ jobs:
           git push origin HEAD:${{ github.ref }} 
 
   build-310:
-      needs: build-3.9
+      needs: build-39
       runs-on: ubuntu-latest
       strategy:
         matrix:
