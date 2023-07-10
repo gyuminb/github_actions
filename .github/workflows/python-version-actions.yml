@@ -31,7 +31,7 @@ jobs:
           git config --local user.email "guminb@ajou.ac.kr"
           git config --local user.name "Gyumin Baek"
           git add -A
-          git commit -m "store python-version-${{ matrix.python-version }}.txt"
+          git commit --allow-empty -m "store python-version-${{ matrix.python-version }}.txt"
           git push origin HEAD:${{ github.ref }} 
 
   build-39:
